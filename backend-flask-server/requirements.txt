@@ -3,3 +3,4 @@ flask-cors
 langchain
 python-dotenv
 langchain-openai
+langchain-community

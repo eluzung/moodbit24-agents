@@ -14,6 +14,7 @@ from langchain_community.utilities import SQLDatabase
 from langchain_community.agent_toolkits import create_sql_agent
 from langchain_core.prompts import MessagesPlaceholder
 
+
 class LangchainAgent:
     def __init__(self):
         load_dotenv()
@@ -21,14 +22,15 @@ class LangchainAgent:
         if not api_key:
             raise ValueError(
                 "API_KEY is missing from the environment variables.")
-        
-        self.llm = ChatOpenAI(temperature=0.0, model="gpt-3.5-turbo", api_key=api_key)
-        
-        
+
+        self.llm = ChatOpenAI(
+            temperature=0.0, model="gpt-3.5-turbo", api_key=api_key)
+
     def sql_query(self, input: str):
         try:
             db = SQLDatabase.from_uri("sqlite:///test_db.db")
-            print(db.dialect)
+            # print(db.dialect)
+            # print(db.get_usable_table_names())
 
             # validation_string_template = """
             # Double check the user's sqlite query for common mistakes, including:
@@ -44,7 +46,7 @@ class LangchainAgent:
             # If there are any of the above mistakes, rewrite the query. If there are no mistakes, just reproduce the original query.
 
             # Output the final SQL query only.
-            
+
             # User Input: {input}
             # """
 
@@ -54,7 +56,8 @@ class LangchainAgent:
 
             # sql_agent = create_sql_agent(self.llm, db=db, agent_type="openai-tools", verbose=True, prompt=validation_prompt, agent_executor_kwargs={"return_intermediate_steps": True})
 
-            sql_agent = create_sql_agent(self.llm, db=db, agent_type="openai-tools", verbose=True, agent_executor_kwargs={"return_intermediate_steps": True})
+            sql_agent = create_sql_agent(self.llm, db=db, agent_type="openai-tools",
+                                         verbose=True, agent_executor_kwargs={"return_intermediate_steps": True})
 
             response = sql_agent.invoke({
                 "input": input})
@@ -126,7 +129,6 @@ class LangchainAgent:
     #         response = zero_shot_agent.run(input)
 
     #         return response
-
 
     #     except Exception as e:
     #         print("error", e)
