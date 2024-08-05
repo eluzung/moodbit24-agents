@@ -29,7 +29,11 @@ class LangchainAgent_postgresql:
             )
 
             response = sql_agent.invoke(
-                {"input": input + " Must include the correct SQL query."})
+                {"input": input + """ Must include the correct SQL query.
+                 
+                 Example: 
+                 input: SELECT * FROM products WHERE stock_quantity LIKE 'A%' AND name > 50;
+                 output: SELECT * FROM products WHERE stock_quantity > 50 AND name LIKE 'A%';"""})
 
             sql_query_match = re.search(
                 r'```sql\n(SELECT[\s\S]*?)\n```', response["output"])

@@ -1,0 +1,74 @@
+Question: Calculate the average order value for each customer in 2024.
+
+Correct SQL:
+sql
+SELECT c.customer_id, c.first_name, c.last_name, AVG(pur.total_amount) AS avg_order_value 
+FROM customers c 
+JOIN purchases pur ON c.customer_id = pur.customer_id 
+WHERE EXTRACT(YEAR FROM pur.purchase_date) = 2024 
+GROUP BY c.customer_id, c.first_name, c.last_name;
+
+Token usage: CompletionUsage(completion_tokens=79, prompt_tokens=420, total_tokens=499)
+Time taken to generate SQL query: 2.6096949577331543 seconds
+
+SQL with Error:
+sql
+SELECT c.customer_id, c.first_name, c.last_name, AVG(pur.total_amount) AS avg_order_value 
+FROM customers c 
+JOIN purchases pur ON c.customer_id = pur.customer_id 
+WHERE EXTRACT(YEAR FROM pur.purchase_date) = 2024;
+Error Description:
+Logical error: missing GROUP BY clause for c.customer_id, c.first_name, c.last_name.
+
+Token usage: CompletionUsage(completion_tokens=81, prompt_tokens=459, total_tokens=540)
+Time taken to generate SQL query: 2.3690900802612305 seconds
+
+Question: Find the total revenue generated from each payment method in 2024.
+
+Correct SQL:
+sql
+SELECT pur.payment_method, SUM(pur.total_amount) AS total_revenue 
+FROM purchases pur 
+WHERE EXTRACT(YEAR FROM pur.purchase_date) = 2024 
+GROUP BY pur.payment_method;
+
+Token usage: CompletionUsage(completion_tokens=39, prompt_tokens=421, total_tokens=460)
+Time taken to generate SQL query: 1.5508313179016113 seconds
+
+SQL with Error:
+sql
+SELECT pur.payment_method, SUM(pur.total_amount) AS total_revenue 
+FROM purchases pur 
+WHERE EXTRACT(YEAR FROM pur.purchase_date) = 2024;
+Error Description:
+Logical error: missing GROUP BY clause for pur.payment_method.
+
+Token usage: CompletionUsage(completion_tokens=45, prompt_tokens=440, total_tokens=485)
+Time taken to generate SQL query: 1.9047889709472656 seconds
+
+Question: Determine the total number of purchases and the average total amount per purchase for each month in 2024.
+
+Correct SQL:
+sql
+SELECT EXTRACT(MONTH FROM pur.purchase_date) AS month, 
+       COUNT(*) AS total_purchases, 
+       AVG(pur.total_amount) AS avg_total_amount 
+FROM purchases pur 
+WHERE EXTRACT(YEAR FROM pur.purchase_date) = 2024 
+GROUP BY EXTRACT(MONTH FROM pur.purchase_date);
+
+Token usage: CompletionUsage(completion_tokens=77, prompt_tokens=428, total_tokens=505)
+Time taken to generate SQL query: 2.454859972000122 seconds
+
+SQL with Error:
+sql
+SELECT EXTRACT(MONTH FROM pur.purchase_date) AS month, 
+       COUNT(*) AS total_purchases, 
+       AVG(pur.total_amount) AS avg_total_amount 
+FROM purchases pur 
+WHERE EXTRACT(YEAR FROM pur.purchase_date) = 2024;
+Error Description:
+Logical error: missing GROUP BY clause for EXTRACT(MONTH FROM pur.purchase_date).
+Token usage: CompletionUsage(completion_tokens=59, prompt_tokens=456, total_tokens=515)
+Time taken to generate SQL query: 1.6435701847076416 seconds
+
